@@ -14,9 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 //@Builder
 @Data
-public class Host extends RegistratedUser{
+public class Host{
 
-
+    @Id
+    private String Id;
     private List<Accomodation> accomodations;
 
 }

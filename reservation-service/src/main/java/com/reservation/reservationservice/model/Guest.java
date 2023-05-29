@@ -14,11 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 //@Builder
 @Data
-public class Guest extends RegistratedUser{
+public class Guest {
 
     @Id
     private String Id;
-
     private List<Request> requests;
 
 }

@@ -17,7 +17,6 @@ public abstract class DateRange {
 
     @Id
     private String Id;
-
     private Date dateFrom; //pitaj da li da stavim local
     private Date dateTo;
 
