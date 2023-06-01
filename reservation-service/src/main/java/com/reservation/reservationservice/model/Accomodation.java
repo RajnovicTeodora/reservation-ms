@@ -24,6 +24,7 @@ public class Accomodation {
     private int maxGuest;
     private int minGuest;
     private boolean automaticApproval;
+    private List<Unavilability> unavilabilities;
 
 
 
