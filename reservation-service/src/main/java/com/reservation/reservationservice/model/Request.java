@@ -1,5 +1,6 @@
 package com.reservation.reservationservice.model;
 
+import com.reservation.reservationservice.dtos.NewRequestDTO;
 import com.reservation.reservationservice.model.enums.RequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Optional;
 
 @Document(value = "request")
 @AllArgsConstructor
@@ -18,4 +21,12 @@ public class Request extends DateRange{
     private RequestStatus requestStatus;
     private boolean isDeleted;
     private Accomodation accomodation;
+
+    public Request(NewRequestDTO requestDTO, Optional<Accomodation> accomodation) {
+        super(null, requestDTO.getDateFrom(), requestDTO.getDateTo());
+        this.accomodation = accomodation.get();
+        this.guestNumber = requestDTO.getGuestNumber();
+        this.requestStatus = RequestStatus.PANDING;
+
+    }
 }
