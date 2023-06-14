@@ -1,6 +1,5 @@
 package com.reservation.reservationservice.model;
 import com.reservation.reservationservice.dtos.AccomodationDTO;
-import com.reservation.reservationservice.dtos.AddressDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +21,7 @@ public class Accomodation {
     private String name;
     private List<String> listPhotos;
     private Address addres;
-    private List<String> benefits;
+    private String benefits;
     private int maxGuest;
     private int minGuest;
     private boolean automaticApproval;
@@ -37,5 +36,6 @@ public class Accomodation {
         this.name = accomodation.getName();
         this.benefits = accomodation.getBenefits();
         this.automaticApproval = accomodation.isAutomaticApproval();
+
     }
 }

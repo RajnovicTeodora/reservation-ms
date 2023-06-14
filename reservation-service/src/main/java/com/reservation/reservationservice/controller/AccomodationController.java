@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping("/api/accomodation")
 public class AccomodationController {
 
     @Autowired
     private AccomodationService accomodationService;
-    private static final String ENTITY_NAME = "accomodation";
-    private static final String applicationName = "reservation service";
 
     @ResponseBody
     @PostMapping(path = "/addAccomodation")
@@ -23,7 +23,7 @@ public class AccomodationController {
         if(accomodation.getId()!=null){
             throw new BadRequestException("Accomodation already have id.");
         }
-        return  accomodationService.save(accomodation);
+        return accomodationService.save(accomodation);
     }
 
 }

@@ -20,6 +20,7 @@ public class AccomodationService {
         }
 
         Accomodation newAccomodation = new Accomodation(accomodation);
-        return new AccomodationDTO(accomodationRepository.save(newAccomodation));
+        Accomodation saved = accomodationRepository.save(newAccomodation);
+        return new AccomodationDTO(saved);
     }
 }
