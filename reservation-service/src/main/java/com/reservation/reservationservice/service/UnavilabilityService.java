@@ -1,9 +1,11 @@
 package com.reservation.reservationservice.service;
 
+import com.reservation.reservationservice.dtos.PriceDTO;
 import com.reservation.reservationservice.dtos.UnavilabilityDTO;
 import com.reservation.reservationservice.exceptions.BadRequestException;
 import com.reservation.reservationservice.model.Accomodation;
 import com.reservation.reservationservice.model.DateRange;
+import com.reservation.reservationservice.model.Price;
 import com.reservation.reservationservice.model.Unavilability;
 import com.reservation.reservationservice.repository.AccomodationRepository;
 import com.reservation.reservationservice.repository.ReservationRepository;
@@ -11,6 +13,8 @@ import com.reservation.reservationservice.repository.UnavilabilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,14 +29,17 @@ public class UnavilabilityService {
     public UnavilabilityDTO save(UnavilabilityDTO unavilabilityDTO) throws Exception {
 
         Optional<Accomodation> accomodation = accomodationRepository.findById(unavilabilityDTO.getAccomodationId());
-
+        List<Unavilability> unavilabilities= unavilabilityRepository.findAllByAccomodationId(unavilabilityDTO.getAccomodationId());
+        unavilabilityDTO.convertDate();
         if(accomodation.isPresent()){
-            for(DateRange existing_unavilability : accomodation.get().getUnavilabilities()){
+
+            for(DateRange existing_unavilability : unavilabilities){
                 if (chackDaysRange(unavilabilityDTO, existing_unavilability)){
                     throw new BadRequestException("You alreday chose that your accomodation is unavilable in that time.");
                 }
             }
-            for(DateRange existing_reservations : reservationRepository.findByAccomodationId(accomodation.get().getId())){
+
+            for(DateRange existing_reservations : reservationRepository.findByAccomodation(accomodation.get().getId())){
                 if (chackDaysRange(unavilabilityDTO, existing_reservations)){
                     throw new BadRequestException("You alreday have reservation for that period");
                 }
@@ -48,5 +55,14 @@ public class UnavilabilityService {
                 unavilabilityDTO.getDateFrom().after(existingDateRange.getDateTo())) ||
                 (unavilabilityDTO.getDateTo().before(existingDateRange.getDateFrom()) &&
                         unavilabilityDTO.getDateTo().after(existingDateRange.getDateTo()));
+    }
+
+    public List<UnavilabilityDTO> getListUnavilabilitiesForAccomodation(String accomodationId) {
+        List<Unavilability> unavilabilities= unavilabilityRepository.findByAccomodationId(accomodationId);
+        List<UnavilabilityDTO> unavilabilityDTOS = new ArrayList<>();
+        for(Unavilability u : unavilabilities){
+            unavilabilityDTOS.add(new UnavilabilityDTO(u));
+        }
+        return unavilabilityDTOS;
     }
 }

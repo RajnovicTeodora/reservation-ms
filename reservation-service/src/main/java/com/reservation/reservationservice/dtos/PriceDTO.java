@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -21,6 +24,8 @@ public class PriceDTO {
     private double price;
     private PriceStatus status;
     private String accomodationId;
+    private String startDate;
+    private String endDate;
 
 
     public  PriceDTO(Price price) {
@@ -30,5 +35,18 @@ public class PriceDTO {
         this.price = price.getPrice();
         this.status = price.getStatus();
         this.accomodationId = price.getAccomodationId();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        this.startDate =dateFormat.format(price.getDateFrom());
+        if(price.getDateTo()!=null){
+            this.endDate =dateFormat.format(price.getDateTo());
+        }
+    }
+
+    public void convertDate() {
+        try {
+            this.setDateFrom(new SimpleDateFormat("yyyy-MM-dd").parse(this.getStartDate()));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

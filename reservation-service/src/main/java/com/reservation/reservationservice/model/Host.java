@@ -17,7 +17,7 @@ import java.util.List;
 public class Host{
 
     @Id
-    private String Id;
+    private String id;
     private List<Accomodation> accomodations;
 
 }
