@@ -1,12 +1,11 @@
 package com.reservation.reservationservice.dtos;
 
 import com.reservation.reservationservice.model.Accomodation;
-import com.reservation.reservationservice.model.Address;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class AccomodationDTO {
     private String name;
     private List<String> listPhotos;
     private AddressDTO addres;
-    private List<String> benefits;
+    private String benefits;
     private int maxGuest;
     private int minGuest;
     private boolean automaticApproval;
@@ -37,3 +36,4 @@ public class AccomodationDTO {
 
     }
 }
+
