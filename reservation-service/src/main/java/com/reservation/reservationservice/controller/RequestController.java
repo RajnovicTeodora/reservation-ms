@@ -19,7 +19,7 @@ public class RequestController {
     @ResponseStatus(HttpStatus.OK)
     public RequestDTO saveRequest (@RequestBody NewRequestDTO request) throws Exception{
         if(request.getId()!=null){
-            throw new BadRequestException("Price already have id.");
+            throw new BadRequestException("Request already have id.");
         }
         return requestService.save(request);
     }

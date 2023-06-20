@@ -26,7 +26,7 @@ public class Request extends DateRange{
         super(null, requestDTO.getDateFrom(), requestDTO.getDateTo());
         this.accomodation = accomodation.get();
         this.guestNumber = requestDTO.getGuestNumber();
-        this.requestStatus = RequestStatus.PANDING;
+        this.requestStatus = RequestStatus.PENDING;
 
     }
 }
