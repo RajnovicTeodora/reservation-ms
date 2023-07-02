@@ -20,4 +20,5 @@ public class NewRequestDTO {
     private RequestStatus requestStatus;
     private boolean isDeleted;
     private String accomodationId;
+    private String guestId;
 }

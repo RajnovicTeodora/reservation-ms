@@ -25,15 +25,16 @@ public class AccomodationDTO {
     private boolean automaticApproval;
 
     public  AccomodationDTO(Accomodation accomodation) {
-        this.addres = new AddressDTO(accomodation.getAddres());
-        this.Id = accomodation.getId();
-        this.maxGuest = accomodation.getMaxGuest();
-        this.minGuest = accomodation.getMinGuest();
-        this.listPhotos = accomodation.getListPhotos();
-        this.name = accomodation.getName();
-        this.benefits = accomodation.getBenefits();
-        this.automaticApproval = accomodation.isAutomaticApproval();
-
+        if(accomodation !=null){
+            this.addres = new AddressDTO(accomodation.getAddres());
+            this.Id = accomodation.getId();
+            this.maxGuest = accomodation.getMaxGuest();
+            this.minGuest = accomodation.getMinGuest();
+            this.listPhotos = accomodation.getListPhotos();
+            this.name = accomodation.getName();
+            this.benefits = accomodation.getBenefits();
+            this.automaticApproval = accomodation.isAutomaticApproval();
+        }
     }
 }
 

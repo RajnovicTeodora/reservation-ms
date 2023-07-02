@@ -17,7 +17,7 @@ import java.util.List;
 public class Accomodation {
 
     @Id
-    private String Id;
+    private String id;
     private String name;
     private List<String> listPhotos;
     private Address addres;
@@ -29,7 +29,7 @@ public class Accomodation {
 
     public Accomodation(AccomodationDTO accomodation) {
         this.addres = new Address(accomodation.getAddres());
-        this.Id = accomodation.getId();
+        this.id = accomodation.getId();
         this.maxGuest = accomodation.getMaxGuest();
         this.minGuest = accomodation.getMinGuest();
         this.listPhotos = accomodation.getListPhotos();

@@ -20,13 +20,15 @@ public class Request extends DateRange{
     private int guestNumber;
     private RequestStatus requestStatus;
     private boolean isDeleted;
-    private Accomodation accomodation;
+    private String accomodationId; //ovde ce mozda ici accId, saznacemo prilikom koriscenja
+    private String guestId;
 
     public Request(NewRequestDTO requestDTO, Optional<Accomodation> accomodation) {
         super(null, requestDTO.getDateFrom(), requestDTO.getDateTo());
-        this.accomodation = accomodation.get();
+        accomodation.ifPresent(value -> this.accomodationId = value.getId());
         this.guestNumber = requestDTO.getGuestNumber();
         this.requestStatus = RequestStatus.PENDING;
+        this.guestId = requestDTO.getGuestId();
 
     }
 }

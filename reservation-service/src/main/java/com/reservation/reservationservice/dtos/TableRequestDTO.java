@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Data
-public class RequestDTO {
+public class TableRequestDTO {
     private String id;
     private Date dateFrom;
     private Date dateTo;
@@ -21,16 +21,18 @@ public class RequestDTO {
     private RequestStatus requestStatus;
     private boolean isDeleted;
     private String accomodationName;
-    private String accomodationId;
+    private String username;
+    private int canceledNumber;
 
-    public RequestDTO(Request request, String accomodationName) { //todo datumi
+    public TableRequestDTO(Request request, String username, int numberOfCancelation, String accomodationName) { //todo datumi u neki utils
         this.id = request.getId();
         this.dateFrom = request.getDateFrom();
         this.dateTo = request.getDateTo();
         this.guestNumber = request.getGuestNumber();
         this.requestStatus = request.getRequestStatus();
         this.isDeleted = request.isDeleted();
-        this.accomodationId = request.getAccomodationId();
         this.accomodationName = accomodationName;
+        this.username = username;
+        this.canceledNumber = numberOfCancelation;
     }
 }
