@@ -17,5 +17,6 @@ public class Request extends DateRange{
     private int guestNumber;
     private RequestStatus requestStatus;
     private boolean isDeleted;
-    private Accomodation accomodation;
+    private String accomodationId;
+    private String guestId;
 }
