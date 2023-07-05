@@ -35,6 +35,7 @@ public class RequestService {
         if(request.isPresent()){
             Reservation reservation = new Reservation(request.get(), guestRepository.findById(request.get().getGuestId()).get()); //todo
             request.get().setRequestStatus(RequestStatus.APPROVED);
+            this.requestRepository.save(request.get());
 
             for(Request otherRequest : this.requestRepository.findAllByAccomodationId(request.get().getAccomodationId())){
                 if(!Objects.equals(otherRequest.getId(), request.get().getId())){
@@ -44,8 +45,10 @@ public class RequestService {
                     }
                 }
             }
+            System.out.println("ovde");
             return new ReservationDTO(this.reservationRepository.save(reservation));
         }
+        System.out.println("tu");
         throw new BadRequestException("There is no request with that id");
     }
 
@@ -58,10 +61,9 @@ public class RequestService {
         List<TableRequestDTO> dtos = requestRepository.findAllByAccomodationId(id).stream()
                 .filter(r -> !r.isDeleted() && r.getRequestStatus() == RequestStatus.PANDING)
                 .map(r -> {
-                    //Guest guest = guestRepository.findById(r.getGuestId()).get();
-                    //Accomodation accomodation = accomodationRepository.findById(r.getAccomodationId()).get();
-                    //guest.getCanceldReservations(),accomodation.getName()
-                    return new TableRequestDTO(r, "", 2, "name");//todo
+                    Guest guest = guestRepository.findById(r.getGuestId()).get();
+                    Accomodation accomodation = accomodationRepository.findById(r.getAccomodationId()).get();
+                    return new TableRequestDTO(r, "", guest.getCanceldReservations(),accomodation.getName());//todo
                 })
                 .collect(Collectors.toList());
 
