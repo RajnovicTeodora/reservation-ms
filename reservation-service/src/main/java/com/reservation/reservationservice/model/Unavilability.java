@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Document(value = "unavilability")
 @TypeAlias("unavilability")
@@ -45,5 +46,10 @@ public class Unavilability extends DateRange {
             this.setDateTo(dto.getDateTo());
         }
         this.accomodationId = dto.getAccomodationId();
+    }
+
+    public Unavilability(String number, String number1, Date date, Date date1) {
+        super(number, date, date1);
+        this.accomodationId = number1;
     }
 }

@@ -35,6 +35,17 @@ public class UnavilabilityDTO {
             this.endDate =dateFormat.format(unavilability.getDateTo());
         }
     }
+
+    public UnavilabilityDTO(String number, String number1, Date date, Date date1) {
+        this.id = number;
+        this.dateFrom = date;
+        this.dateTo = date1;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        this.startDate =dateFormat.format(date);
+        this.endDate =dateFormat.format(date1);
+        this.accomodationId = number1;
+    }
+
     public void convertDate() {
         try {
             System.out.println(this.getStartDate());

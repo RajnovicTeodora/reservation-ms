@@ -1,11 +1,8 @@
 package com.reservation.reservationservice.service;
-
-import com.reservation.reservationservice.dtos.PriceDTO;
 import com.reservation.reservationservice.dtos.UnavilabilityDTO;
 import com.reservation.reservationservice.exceptions.BadRequestException;
 import com.reservation.reservationservice.model.Accomodation;
 import com.reservation.reservationservice.model.DateRange;
-import com.reservation.reservationservice.model.Price;
 import com.reservation.reservationservice.model.Unavilability;
 import com.reservation.reservationservice.repository.AccomodationRepository;
 import com.reservation.reservationservice.repository.ReservationRepository;
@@ -34,7 +31,7 @@ public class UnavilabilityService {
         if(accomodation.isPresent()){
 
             for(DateRange existing_unavilability : unavilabilities){
-                if (chackDaysRange(unavilabilityDTO, existing_unavilability)){
+                if (!chackDaysRange(unavilabilityDTO, existing_unavilability)){
                     throw new BadRequestException("You alreday chose that your accomodation is unavilable in that time.");
                 }
             }
@@ -44,17 +41,18 @@ public class UnavilabilityService {
                     throw new BadRequestException("You alreday have reservation for that period");
                 }
             }
-        }
-        Unavilability unavilability = new Unavilability(unavilabilityDTO);
-        return new UnavilabilityDTO(unavilabilityRepository.save(unavilability));
 
+            Unavilability unavilability = new Unavilability(unavilabilityDTO);
+            return new UnavilabilityDTO(unavilabilityRepository.save(unavilability));
+        }
+        throw  new BadRequestException("There is no accomodation with given id");
     }
 
     public boolean chackDaysRange(UnavilabilityDTO unavilabilityDTO, DateRange  existingDateRange){
         return (unavilabilityDTO.getDateFrom().after(existingDateRange.getDateFrom()) &&
                 unavilabilityDTO.getDateFrom().after(existingDateRange.getDateTo())) ||
                 (unavilabilityDTO.getDateTo().before(existingDateRange.getDateFrom()) &&
-                        unavilabilityDTO.getDateTo().after(existingDateRange.getDateTo()));
+                        unavilabilityDTO.getDateFrom().before(existingDateRange.getDateFrom()));
     }
 
     public List<UnavilabilityDTO> getListUnavilabilitiesForAccomodation(String accomodationId) {
