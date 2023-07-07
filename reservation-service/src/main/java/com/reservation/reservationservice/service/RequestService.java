@@ -45,10 +45,8 @@ public class RequestService {
                     }
                 }
             }
-            System.out.println("ovde");
             return new ReservationDTO(this.reservationRepository.save(reservation));
         }
-        System.out.println("tu");
         throw new BadRequestException("There is no request with that id");
     }
 
