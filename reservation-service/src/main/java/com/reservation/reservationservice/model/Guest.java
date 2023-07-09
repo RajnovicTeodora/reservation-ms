@@ -17,7 +17,7 @@ import java.util.List;
 public class Guest {
 
     @Id
-    private String Id;
-    private List<Request> requests;
+    private String id;
+    private int  canceldReservations;
 
 }
