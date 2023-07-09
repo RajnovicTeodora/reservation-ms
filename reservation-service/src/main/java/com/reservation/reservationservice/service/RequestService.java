@@ -68,13 +68,15 @@ public class RequestService {
         return dtos;
     }
 
-    public boolean declineRequest(String id) {
+    public boolean declineRequest(String id) throws BadRequestException {
         System.out.println(id);
         Optional<Request> request =  this.requestRepository.findById(id);
-
-        request.ifPresent(value -> value.setRequestStatus(RequestStatus.DECLINED));
-        requestRepository.save(request.get());
-        System.out.println(request);
-        return true;
+        if(request.isPresent()){
+            request.ifPresent(value -> value.setRequestStatus(RequestStatus.DECLINED));
+            requestRepository.save(request.get());
+            System.out.println(request);
+            return true;
+        }
+        throw new BadRequestException("There is no request with that id");
     }
 }
