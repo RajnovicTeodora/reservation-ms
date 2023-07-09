@@ -16,7 +16,7 @@ import java.util.Date;
 public abstract class DateRange {
 
     @Id
-    private String Id;
+    private String id;
     private Date dateFrom; //pitaj da li da stavim local
     private Date dateTo;
 
