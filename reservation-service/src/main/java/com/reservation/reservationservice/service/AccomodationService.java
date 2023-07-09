@@ -1,10 +1,8 @@
 package com.reservation.reservationservice.service;
-
 import com.reservation.reservationservice.dtos.AccomodationDTO;
 import com.reservation.reservationservice.exceptions.BadRequestException;
 import com.reservation.reservationservice.model.Accomodation;
 import com.reservation.reservationservice.repository.AccomodationRepository;
-import com.reservation.reservationservice.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

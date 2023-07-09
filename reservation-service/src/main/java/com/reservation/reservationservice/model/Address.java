@@ -1,7 +1,6 @@
 package com.reservation.reservationservice.model;
 
 import com.reservation.reservationservice.dtos.AddressDTO;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class Address {
     @Id
-    private String Id;
+    private String id;
     private String street;
     private String number;
     private String city;
@@ -25,7 +24,6 @@ public class Address {
         this.city = addres.getCity();
         this.number = addres.getNumber();
         this.street  = addres.getStreet();
-        this.Id = addres.getId();
+        this.id = addres.getId();
     }
-
 }

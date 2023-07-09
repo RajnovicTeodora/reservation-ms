@@ -1,5 +1,9 @@
 package com.reservation.reservationservice.controller;
 
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.reservation.reservationservice.dtos.AccomodationDTO;
 import com.reservation.reservationservice.exceptions.BadRequestException;
 import com.reservation.reservationservice.service.AccomodationService;
@@ -12,7 +16,6 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/accomodation")
 public class AccomodationController {
-
     @Autowired
     private AccomodationService accomodationService;
 
@@ -25,5 +28,6 @@ public class AccomodationController {
         }
         return accomodationService.save(accomodation);
     }
+
 
 }
