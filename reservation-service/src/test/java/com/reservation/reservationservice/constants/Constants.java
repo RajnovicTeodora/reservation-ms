@@ -74,4 +74,29 @@ public class Constants {
             30,
             1
     );
+    public static final UnavilabilityDTO NEW_UNAVILABILITY_DTO_1 = new UnavilabilityDTO(
+            null,
+            "648ebee63073a2143b4f95bf",
+            new Date(2024,10,17),
+            new Date(2024, 10, 20)
+    );
+    public static final UnavilabilityDTO NEW_UNAVILABILITY_DTO_NO_ACCOMODATION = new UnavilabilityDTO(
+            null,
+            "sdadada",
+            new Date(2024,10,17),
+            new Date(2024, 10, 20)
+    );
+    public static final UnavilabilityDTO NEW_UNAVILABILITY_DTO_2 = new UnavilabilityDTO(
+            null,
+            "648ebee63073a2143b4f95bf",
+            new Date(2024,11,18),
+            new Date(2024, 11, 27)
+    );
+    public static final UnavilabilityDTO NEW_UNAVILABILITY_DTO_3 = new UnavilabilityDTO(
+            null,
+            "648ebee63073a2143b4f95bf",
+            new Date(2024,11,19),
+            new Date(2024, 11, 29)
+    );
+
 }
