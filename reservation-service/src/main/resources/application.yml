@@ -1,0 +1,23 @@
+#server:
+#  port: 8086
+#app:
+#  secret-key: 6D5971337436763979244226452948404D635166546A576E5A7234753778217A25432A462D4A614E645267556B58703273357638792F423F4428472B4B625065
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka
+#spring:
+#  application:
+#    name: api-gateway
+#  cloud:
+#    gateway:
+#      default-filters:
+#        - name: AuthenticationFilter
+#      globalcors:
+#        add-to-simple-url-handler-mapping: true
+#        corsConfigurations:
+#          '[/**]':
+#            allowedOrigins: "http://localhost:3000"
+#            allowedMethods: "*"
+#            allowedHeaders: "*"
+#            allowCredentials: false

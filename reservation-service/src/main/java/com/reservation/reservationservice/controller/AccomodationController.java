@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("/api/accomodation")
+@RequestMapping("/accomodation")
 public class AccomodationController {
 
     @Autowired
@@ -24,6 +24,12 @@ public class AccomodationController {
             throw new BadRequestException("Accomodation already have id.");
         }
         return accomodationService.save(accomodation);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public String get () {
+        return "ok";
     }
 
 }
