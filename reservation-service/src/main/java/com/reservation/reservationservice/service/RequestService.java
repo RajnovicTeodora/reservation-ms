@@ -38,23 +38,22 @@ public class RequestService {
     private GuestRepository guestRepository;
     public ReservationDTO approveRequest(String id) throws BadRequestException {
 
-        Optional<Request> request =  this.requestRepository.findById(id);
-        if(request.isPresent()){
-            Reservation reservation = new Reservation(request.get(), guestRepository.findById(request.get().getGuestId()).get()); //todo
-            request.get().setRequestStatus(RequestStatus.APPROVED);
-            this.requestRepository.save(request.get());
+        Request request =  this.requestRepository.findById(id).orElseThrow(() ->new BadRequestException("There is no request with that id"));
 
-            for(Request otherRequest : this.requestRepository.findAllByAccomodationId(request.get().getAccomodationId())){
-                if(!Objects.equals(otherRequest.getId(), request.get().getId())){
-                    if(!chackDaysRangeDateRange(request.get(), otherRequest)){
-                        otherRequest.setRequestStatus(RequestStatus.DECLINED);
-                        this.requestRepository.save(otherRequest);
-                    }
+        Reservation reservation = new Reservation(request, guestRepository.findById(request.getGuestId()).get());
+        request.setRequestStatus(RequestStatus.APPROVED);
+        this.requestRepository.save(request);
+
+        for(Request otherRequest : this.requestRepository.findAllByAccomodationId(request.getAccomodationId())){
+            if(!Objects.equals(otherRequest.getId(), request.getId())){
+                if(!chackDaysRangeDateRange(request, otherRequest)){
+                    otherRequest.setRequestStatus(RequestStatus.DECLINED);
+                    this.requestRepository.save(otherRequest);
                 }
             }
-            return new ReservationDTO(this.reservationRepository.save(reservation));
         }
-        throw new BadRequestException("There is no request with that id");
+        return new ReservationDTO(this.reservationRepository.save(reservation));
+
     }
 
     public boolean chackDaysRangeDateRange(DateRange request, DateRange existingDateRange){
