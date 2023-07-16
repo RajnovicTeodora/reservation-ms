@@ -36,3 +36,4 @@ public class TableRequestDTO {
         this.canceledNumber = numberOfCancelation;
     }
 }
+
