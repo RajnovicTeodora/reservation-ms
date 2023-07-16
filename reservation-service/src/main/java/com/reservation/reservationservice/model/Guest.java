@@ -18,6 +18,7 @@ public class Guest {
 
     @Id
     private String id;
+
     private int  canceldReservations; //samo one rezervacije koje je on sam otkazao
 
 }

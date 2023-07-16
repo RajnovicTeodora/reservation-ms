@@ -1,7 +1,6 @@
 package com.reservation.reservationservice.model;
 
 import com.reservation.reservationservice.dtos.AddressDTO;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,5 +26,4 @@ public class Address {
         this.street  = addres.getStreet();
         this.id = addres.getId();
     }
-
 }

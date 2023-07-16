@@ -1,11 +1,14 @@
 package com.reservation.reservationservice.model;
+
 import com.reservation.reservationservice.dtos.AccomodationDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
@@ -21,10 +24,10 @@ public class Accomodation {
     private String name;
     private List<String> listPhotos;
     private Address addres;
+    private boolean automaticApproval;
     private String benefits;
     private int maxGuest;
     private int minGuest;
-    private boolean automaticApproval;
 
 
     public Accomodation(AccomodationDTO accomodation) {
