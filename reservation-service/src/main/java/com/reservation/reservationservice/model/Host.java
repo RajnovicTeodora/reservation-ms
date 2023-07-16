@@ -12,7 +12,7 @@ import java.util.List;
 @Document(value = "host")
 @AllArgsConstructor
 @NoArgsConstructor
-//@Builder
+@Builder
 @Data
 public class Host{
 
