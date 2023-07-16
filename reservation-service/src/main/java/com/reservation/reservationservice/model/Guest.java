@@ -12,12 +12,13 @@ import java.util.List;
 @Document(value = "guest")
 @AllArgsConstructor
 @NoArgsConstructor
-//@Builder
+@Builder
 @Data
 public class Guest {
 
     @Id
     private String id;
     private int  canceldReservations;
+
 
 }

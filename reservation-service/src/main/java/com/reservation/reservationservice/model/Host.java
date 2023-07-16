@@ -12,12 +12,12 @@ import java.util.List;
 @Document(value = "host")
 @AllArgsConstructor
 @NoArgsConstructor
-//@Builder
+@Builder
 @Data
 public class Host{
 
     @Id
-    private String Id;
+    private String id;
     private List<Accomodation> accomodations;
 
 }

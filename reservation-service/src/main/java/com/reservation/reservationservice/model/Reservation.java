@@ -21,7 +21,16 @@ public class Reservation extends DateRange{
     private boolean isDeleted;
     private boolean isCancled;
 
+
     public Reservation(Request request, Guest guest) {
+        super(null, request.getDateFrom(), request.getDateTo());
+        this.guestNumber = request.getGuestNumber();
+        this.guest = guest;
+        this.isDeleted = false;
+        this.isCancled = false;
+    }
+
+    public Reservation(Request request, Guest guest, Accomodation accomodation) {
         super(null, request.getDateFrom(), request.getDateTo());
         this.guestNumber = request.getGuestNumber();
         this.guest = guest;
