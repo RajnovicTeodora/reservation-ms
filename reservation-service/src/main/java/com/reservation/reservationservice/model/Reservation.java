@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @Document(value = "reservation")
+@TypeAlias("reservation")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -30,11 +29,12 @@ public class Reservation extends DateRange{
         this.isCancled = false;
     }
 
-    public Reservation(Request request, Guest guest, Accomodation accomodation) {
+    public Reservation(Request request, Guest guest, Accomodation accommodation) {
         super(null, request.getDateFrom(), request.getDateTo());
         this.guestNumber = request.getGuestNumber();
         this.guest = guest;
         this.isDeleted = false;
         this.isCancled = false;
+        this.accomodation = accommodation;
     }
 }

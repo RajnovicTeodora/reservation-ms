@@ -35,7 +35,6 @@ public class PriceController {
     @GetMapping(path = "/getListPricesForAccomodation/{accomodationId}")
     @ResponseStatus(HttpStatus.OK)
     public List<PriceDTO> getPrices (@PathVariable String accomodationId) throws Exception{
-
         return   priceService.getListPricesForAccomodation(accomodationId);
     }
 }

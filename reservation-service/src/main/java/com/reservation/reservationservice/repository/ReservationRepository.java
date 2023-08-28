@@ -3,6 +3,7 @@ import com.reservation.reservationservice.model.Reservation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.Date;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface ReservationRepository  extends MongoRepository<Reservation, Str
 
     Reservation findByAccomodationIdAndDateFromAndDateTo(String id, Date dateFrom, Date dateTo);
 
+    List<Reservation> findAllByGuestId(String id);
 }

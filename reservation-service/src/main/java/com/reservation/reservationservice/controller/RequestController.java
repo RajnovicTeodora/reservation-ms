@@ -57,10 +57,10 @@ public class RequestController {
         return requestService.deleteRequest(requestId);
     }
     @ResponseBody
-    @GetMapping(path = "/getByUserId/{userId}")
+    @GetMapping(path = "/getByUserId/{username}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TableRequestDTO> getRequestsByUser (@PathVariable String userId) throws Exception{
-        return requestService.getRequestByUser(userId);
+    public List<TableRequestDTO> getRequestsByUser (@PathVariable String username) throws Exception{
+        return requestService.getRequestByUser(username);
     }
 
 

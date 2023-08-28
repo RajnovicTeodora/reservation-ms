@@ -23,6 +23,7 @@ public class AccomodationDTO {
     private int maxGuest;
     private int minGuest;
     private boolean automaticApproval;
+    private String username;
 
     public  AccomodationDTO(Accomodation accomodation) {
         if(accomodation !=null){
