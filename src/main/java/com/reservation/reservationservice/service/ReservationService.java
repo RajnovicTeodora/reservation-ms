@@ -36,4 +36,3 @@ public class ReservationService {
         throw new BadRequestException("Reservation doesn't exist.");
     }
 }
-git add
