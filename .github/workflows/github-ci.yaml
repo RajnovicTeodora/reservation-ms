@@ -1,41 +1,94 @@
-#FROM openjdk:17
-#COPY target/*.jar app.jar
-#EXPOSE 8080
-#ENTRYPOINT ["java","-jar","/app.jar"]
+name: CI
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
-### BUILD image
-FROM maven:3.8.5-openjdk-17-slim as builder
-  # create app folder for sources
-RUN mkdir -p /build
-WORKDIR /build
-COPY pom.xml /build
-  #Download all required dependencies into one layer
-RUN mvn -B dependency:resolve dependency:resolve-plugins
-  #Copy source code
-COPY src /build/src
-  # Build application
-RUN mvn package -Dmaven.test.skip=true
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ftn
+          POSTGRES_DB: notBookingDB
+        ports:
+          # will assign a random free host port
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-FROM openjdk:17-slim as runtime
-EXPOSE 8080
-  #Set app home folder
-ENV APP_HOME /app
-  #Possibility to set JVM options (https://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html)
-ENV JAVA_OPTS=""
-  
-  #Create base app folder
-RUN mkdir $APP_HOME
-  #Create folder to save configuration files
-RUN mkdir $APP_HOME/config
-  #Create folder with application logs
-RUN mkdir $APP_HOME/log
+    steps:
+      - uses: actions/checkout@v3
 
-VOLUME $APP_HOME/log
-VOLUME $APP_HOME/config
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: "temurin"
 
-WORKDIR $APP_HOME
-  #Copy executable jar file from the builder image
-COPY --from=builder /build/target/*.jar app.jar
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar" ]
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Run unit tests
+        run: mvn test
+
+      - name: Run integration tests
+        run: mvn verify -Pintegration-tests
+
+      - name: Check pipeline result
+        run: |
+          if [ $? -ne 0 ]; then
+            echo "Tests failed."
+            exit 1
+          fi
+  sonarcloud:
+    needs: build-and-test  # Make sure the build step is completed before running SonarCloud analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Updated to v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2  # Updated to v2
+        with:
+          java-version: 17
+          distribution: 'zulu'
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v2  # Updated to v2
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2  # Updated to v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: SonarCloud analysis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn clean verify sonar:sonar -Dsonar.projectKey=RajnovicTeodora_overview-ms
