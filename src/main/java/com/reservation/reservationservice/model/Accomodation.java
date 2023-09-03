@@ -28,6 +28,8 @@ public class Accomodation {
     private String benefits;
     private int maxGuest;
     private int minGuest;
+    private boolean isDeleted;
+    private Host host;
 
 
     public Accomodation(AccomodationDTO accomodation) {
