@@ -1,6 +1,8 @@
 package com.reservation.reservationservice.controller;
 
 
+import com.reservation.reservationservice.exceptions.NotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,10 +26,31 @@ public class AccomodationController {
     @ResponseStatus(HttpStatus.OK)
     public AccomodationDTO saveAccomodation (@RequestBody AccomodationDTO accomodation) throws Exception{
         if(accomodation.getId()!=null){
-            throw new BadRequestException("Accomodation already have id.");
+            throw new BadRequestException("Accommodation already has id.");
         }
         return accomodationService.save(accomodation);
     }
 
+    @ResponseBody
+    @GetMapping(path = "/deleteAccommodations/{hostUsername}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> deleteAccommodations (@PathVariable String hostUsername){
+        try {
+            accomodationService.deleteAccommodations(hostUsername);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (NotFoundException e){
+            return new ResponseEntity<>("Host not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
+    @ResponseBody
+    @GetMapping(path = "/getHostUsernameByAccId/{accId}/{isName}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> getHostUsernameByAccId (@PathVariable String accId, @PathVariable boolean isName){
+        try {
+            return new ResponseEntity<>(accomodationService.getHostUsernameByAccId(accId, isName), HttpStatus.OK);
+        }catch (NotFoundException e){
+            return new ResponseEntity<>("Accommodation not found", HttpStatus.NOT_FOUND);
+        }
+    }
 }
