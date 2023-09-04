@@ -17,7 +17,7 @@ import java.util.List;
 public class Host{
 
 //    @Id
-//    private String id;
+//    private String id; todo ovde mislim da treba odkomentarisati
     private String username;
     private List<Accomodation> accomodations;
 
