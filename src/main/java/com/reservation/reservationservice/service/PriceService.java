@@ -31,7 +31,7 @@ public class PriceService {
 
         }
 
-        for(Reservation reservation : reservationRepository.findByAccomodation(priceDTO.getAccomodationId())){
+        for(Reservation reservation : reservationRepository.findByAccomodationId(priceDTO.getAccomodationId())){
             if(reservation.getDateTo().after(priceDTO.getDateFrom())){ System.out.println("lll");
                 throw new BadRequestException("There is alredy reservation with old price. Input date after "+reservation.getDateTo().toString());
             }

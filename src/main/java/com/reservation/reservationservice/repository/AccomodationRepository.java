@@ -7,4 +7,6 @@ import java.util.Optional;
 @Repository
 public interface AccomodationRepository extends MongoRepository<Accomodation, String> {
     Optional<Accomodation> findAccomodationByName(String name);
+
+    Optional<Accomodation> findAccomodationById(String accommodationId);
 }

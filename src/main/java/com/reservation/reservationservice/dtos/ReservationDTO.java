@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -30,8 +32,18 @@ public class ReservationDTO {
         this.dateTo = reservation.getDateTo();
         this.guestNumber = reservation.getGuestNumber();
         this.guest = new GuestDTO(reservation.getGuest());
-        this.accomodation = reservation.getAccomodation();
+        //this.accomodation = reservation.getAccomodation();
         this.isDeleted = reservation.isDeleted();
         this.isCancled = reservation.isCancled();
+    }
+    public ReservationDTO(Reservation reservation, Accomodation accomodation) {
+        this.Id = reservation.getId();
+        this.dateFrom = reservation.getDateFrom();
+        this.dateTo = reservation.getDateTo();
+        this.guestNumber = reservation.getGuestNumber();
+        this.guest = new GuestDTO(reservation.getGuest());
+        this.isDeleted = reservation.isDeleted();
+        this.isCancled = reservation.isCancled();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     }
 }
