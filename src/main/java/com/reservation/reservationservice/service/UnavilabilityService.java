@@ -36,7 +36,7 @@ public class UnavilabilityService {
                 }
             }
 
-            for(DateRange existing_reservations : reservationRepository.findByAccomodation(accomodation.get().getId())){
+            for(DateRange existing_reservations : reservationRepository.findByAccomodationId(accomodation.get().getId())){
                 if (chackDaysRange(unavilabilityDTO, existing_reservations)){
                     throw new BadRequestException("You alreday have reservation for that period");
                 }

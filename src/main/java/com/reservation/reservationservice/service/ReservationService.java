@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -59,8 +60,15 @@ public class ReservationService {
             if (!g.isPresent()) {
                 throw new NotFoundException("User not found");
             }
-            int activeCount = reservationRepository.getCountByGuestAndDateToAndNotCancelled(g.get(), new Date(), false);
-            return activeCount >= 1;
+            List<Reservation> reservations = reservationRepository.findByGuestIdAndIsCancledFalse(g.get().getId());
+            boolean activeExist = false;
+            for (Reservation r : reservations){
+                if (r.getDateTo().after(new Date())) {
+                    activeExist=true;
+                    break;
+                }
+            }
+            return activeExist;
         }else{
             Optional<Host> g = hostRepository.findHostByUsername(username);
             if (!g.isPresent()) {
@@ -68,10 +76,12 @@ public class ReservationService {
             }
             boolean activeExist = false;
             for (Accomodation a : g.get().getAccomodations() ) {
-                int count = reservationRepository.getCountByAccommodationAndDateToAndNotCancelled(a, new Date(), false);
-                if(count >= 1){
-                    activeExist = true;
-                    break;
+                List<Reservation> reservations = reservationRepository.findByAccomodationIdAndIsCancledFalse(a.getId());
+                for (Reservation r : reservations){
+                    if (r.getDateTo().after(new Date())) {
+                        activeExist=true;
+                        break;
+                    }
                 }
             }
             return activeExist;
@@ -91,22 +101,32 @@ public class ReservationService {
         }
         boolean previousExist = false;
         for (Accomodation a : h.get().getAccomodations() ) {
-            int count = reservationRepository.
-                    getCountByAccommodationAndGuestAndDateToAndNotCancelledFinished(a, g.get(), new Date(), false);
-            if(count >= 1){
-                previousExist = true;
-                break;
+            List<Reservation> reservations = reservationRepository.
+                    findByAccomodationIdAndGuestIdAndIsCancledFalse(a.getId(), g.get().getId());
+
+            for (Reservation r : reservations){
+                if (r.getDateTo().before(new Date())) {
+                    previousExist=true;
+                    break;
+                }
             }
         }
         dto.setRateHost(previousExist);
+        previousExist = false;
         //ACCOMMODATION RATING CHECK
-        Optional<Accomodation> a = accomodationRepository.findAccomodationByName(accommodationId);
+        Optional<Accomodation> a = accomodationRepository.findAccomodationById(accommodationId);
         if(!a.isPresent()){
             throw new BadRequestException("Accommodation doesn't exist.");
         }
-        int count = reservationRepository.
-                getCountByAccommodationAndGuestAndDateToAndNotCancelledFinished(a.get(), g.get(), new Date(), false);
-        dto.setRateAcc(count >= 1);
+        List<Reservation> reservations = reservationRepository.
+                findByAccomodationIdAndGuestIdAndIsCancledFalse(a.get().getId(), g.get().getId());
+        for (Reservation r : reservations){
+            if (r.getDateTo().before(new Date())) {
+                previousExist=true;
+                break;
+            }
+        }
+        dto.setRateAcc(previousExist);
         return dto;
     }
 

@@ -17,7 +17,7 @@ import java.util.List;
 public class Reservation extends DateRange{
     private int guestNumber;
     private Guest guest;  //da imam samo jednog gosta koji je rezervisao ovo u jednom trebutku
-    private Accomodation accomodation;
+    private String accomodationId;
     private boolean isDeleted;
     private boolean isCancled;
 
@@ -36,5 +36,6 @@ public class Reservation extends DateRange{
         this.guest = guest;
         this.isDeleted = false;
         this.isCancled = false;
+        this.accomodationId = accomodation.getId();
     }
 }
