@@ -24,6 +24,7 @@ public class RequestController {
     @PutMapping(path = "/approveRequest/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ReservationDTO approveRequest (@PathVariable String id) throws Exception{
+
         return requestService.approveRequest(id);
     }
     @ResponseBody
@@ -57,10 +58,10 @@ public class RequestController {
         return requestService.deleteRequest(requestId);
     }
     @ResponseBody
-    @GetMapping(path = "/getByUserId/{userId}")
+    @GetMapping(path = "/getByUserId/{username}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TableRequestDTO> getRequestsByUser (@PathVariable String userId) throws Exception{
-        return requestService.getRequestByUser(userId);
+    public List<TableRequestDTO> getRequestsByUser (@PathVariable String username) throws Exception{
+        return requestService.getRequestByUser(username);
     }
 
 

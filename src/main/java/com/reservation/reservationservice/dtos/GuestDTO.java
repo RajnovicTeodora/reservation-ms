@@ -13,9 +13,11 @@ import lombok.NoArgsConstructor;
 public class GuestDTO {
 
     private String id;
+    private String username;
 
 
     public GuestDTO(Guest guest) {
         this.id = guest.getId();
+        this.username = guest.getUsername();
     }
 }

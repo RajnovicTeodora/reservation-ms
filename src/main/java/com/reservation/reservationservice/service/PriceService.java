@@ -23,6 +23,9 @@ public class PriceService {
     @Autowired
     private ReservationRepository reservationRepository;
     public PriceDTO save(PriceDTO priceDTO) throws BadRequestException {
+        if (accomodationRepository.findById(priceDTO.getAccomodationId()).isEmpty()){
+            throw new BadRequestException("There is no accommodation with that id.");
+        }
         if(priceDTO.getDateFrom()==null){
             priceDTO.convertDate();
         }
@@ -33,6 +36,7 @@ public class PriceService {
 
         for(Reservation reservation : reservationRepository.findByAccomodationId(priceDTO.getAccomodationId())){
             if(reservation.getDateTo().after(priceDTO.getDateFrom())){ System.out.println("lll");
+
                 throw new BadRequestException("There is alredy reservation with old price. Input date after "+reservation.getDateTo().toString());
             }
         }

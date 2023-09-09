@@ -10,5 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface HostRepository  extends MongoRepository<Host, String> {
+    Optional<Host> findByUsername(String username);
     Optional<Host> findHostByUsername(String username);
 }

@@ -1,6 +1,7 @@
 package com.reservation.reservationservice.service;
 
 import com.reservation.reservationservice.dtos.RatingDTO;
+import com.reservation.reservationservice.dtos.ReservationDTO;
 import com.reservation.reservationservice.exceptions.BadRequestException;
 import com.reservation.reservationservice.exceptions.NotFoundException;
 import com.reservation.reservationservice.model.Accomodation;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -146,5 +148,15 @@ public class ReservationService {
             h.get().setUsername(newUsername);
             hostRepository.save(h.get());
         }
+    }
+
+    public List<ReservationDTO> getRequestByUser(String username) throws BadRequestException {
+        Guest guest = (Guest) guestRepository.findByUsername(username).orElseThrow(() -> new BadRequestException("Guest not found with username: " + username));
+        List<Reservation> filteredRequests = reservationRepository.findAllByGuestId(guest.getId());
+        List<ReservationDTO> dtos = filteredRequests.stream()
+                .filter(r -> !r.isDeleted() && !r.isCancled())
+                .map(r ->  new ReservationDTO(r))
+                .collect(Collectors.toList());
+        return dtos;
     }
 }

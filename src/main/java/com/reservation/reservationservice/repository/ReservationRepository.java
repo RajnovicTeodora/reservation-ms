@@ -30,4 +30,6 @@ public interface ReservationRepository  extends MongoRepository<Reservation, Str
 //    @Query(value ="{accomodation: ?0, guest: ?1, dateTo:  { $lt: ?2 }, isCancled: ?3 }", count=true)
 //    Integer getCountByAccommodationAndGuestAndDateToAndNotCancelledFinished(Accomodation accomodation, Guest guest,
 //                                                                            Date dateTo, boolean cancelled);
+
+    List<Reservation> findAllByGuestId(String id);
 }

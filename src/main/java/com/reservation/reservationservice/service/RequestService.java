@@ -37,13 +37,10 @@ public class RequestService {
     @Autowired
     private GuestRepository guestRepository;
     public ReservationDTO approveRequest(String id) throws BadRequestException {
-
         Request request =  this.requestRepository.findById(id).orElseThrow(() ->new BadRequestException("There is no request with that id"));
-
-        Reservation reservation = new Reservation(request, guestRepository.findById(request.getGuestId()).get());
+        Reservation reservation = new Reservation(request, guestRepository.findById(request.getGuestId()).get(), accomodationRepository.findById(request.getAccomodationId()).get());
         request.setRequestStatus(RequestStatus.APPROVED);
         this.requestRepository.save(request);
-
         for(Request otherRequest : this.requestRepository.findAllByAccomodationId(request.getAccomodationId())){
             if(!Objects.equals(otherRequest.getId(), request.getId())){
                 if(!chackDaysRangeDateRange(request, otherRequest)){
@@ -67,7 +64,7 @@ public class RequestService {
                 .map(r -> {
                     Guest guest = guestRepository.findById(r.getGuestId()).get();
                     Accomodation accomodation = accomodationRepository.findById(r.getAccomodationId()).get();
-                    return new TableRequestDTO(r, "", guest.getCanceldReservations(),accomodation.getName());//todo
+                    return new TableRequestDTO(r, guest.getUsername(), guest.getCanceldReservations(),accomodation.getName());
                 })
                 .collect(Collectors.toList());
 
@@ -75,12 +72,10 @@ public class RequestService {
     }
 
     public boolean declineRequest(String id) throws BadRequestException {
-        System.out.println(id);
         Optional<Request> request = this.requestRepository.findById(id);
         if (request.isPresent()) {
             request.ifPresent(value -> value.setRequestStatus(RequestStatus.DECLINED));
             requestRepository.save(request.get());
-            System.out.println(request);
             return true;
         }
         throw new BadRequestException("There is no request with that id");
@@ -93,19 +88,25 @@ public class RequestService {
                 throw new BadRequestException("Reservation for that time exists.");
             }
         }
-        Request request = new Request(requestDTO, accomodationRepository.findById(requestDTO.getAccomodationId()));
+
+        if(!guestRepository.findByUsername(requestDTO.getUsername()).isPresent()){
+            throw new BadRequestException("Wrong guest id");
+        }
+        String guestId = guestRepository.findByUsername(requestDTO.getUsername()).get().getId();
+        Request request = new Request(requestDTO, accomodationRepository.findById(requestDTO.getAccomodationId()), guestId);
         Optional<Accomodation> accomodation = accomodationRepository.findById(requestDTO.getAccomodationId());
         if (accomodation.isPresent()){
             if (request.getGuestNumber()> accomodation.get().getMaxGuest() ){
                 throw new BadRequestException("In this accomodation maximum number of guest is "+accomodation.get().getMaxGuest());
             }
             if(accomodationRepository.findById(requestDTO.getAccomodationId()).get().isAutomaticApproval()){
-                Reservation newReservation= new Reservation(request, null, accomodationRepository.findById(requestDTO.getAccomodationId()).get()); //todo guest
+                Reservation newReservation= new Reservation(request, guestRepository.findByUsername(requestDTO.getUsername()).get(), accomodationRepository.findById(requestDTO.getAccomodationId()).get());
                 reservationRepository.save(newReservation);
                 request.setRequestStatus(RequestStatus.APPROVED);
             }
+        }else{
+            throw new BadRequestException("There is no accommodation with that id");
         }
-
         return  new RequestDTO(requestRepository.save(request), accomodationRepository.findById(requestDTO.getAccomodationId()).get().getName());
     }
 
@@ -129,19 +130,15 @@ public class RequestService {
 
     }
 
-    public List<TableRequestDTO> getRequestByUser(String userId) throws BadRequestException {
-
-        List<Request> filteredRequests = requestRepository.findAllByGuestId(userId)
+    public List<TableRequestDTO> getRequestByUser(String username) throws BadRequestException {
+        Guest guest = (Guest) guestRepository.findByUsername(username).orElseThrow(() -> new BadRequestException("Guest not found with username: " + username));
+        List<Request> filteredRequests = requestRepository.findAllByGuestId(guest.getId())
                 .stream()
                 .filter(r -> r.getRequestStatus() == RequestStatus.PENDING && !r.isDeleted())
                 .collect(Collectors.toList());
-        Guest guest = guestRepository.findById(userId).orElseThrow(() -> new BadRequestException("Guest not found with ID: " + userId));
-
-
         List<TableRequestDTO> dtos = filteredRequests.stream()
-                .map(r -> new TableRequestDTO(r, "name", guest.getCanceldReservations(), "accName"))
+                .map(r -> new TableRequestDTO(r, username, guest.getCanceldReservations(), "accName"))//todo
                 .collect(Collectors.toList());
         return dtos;
-
     }
 }

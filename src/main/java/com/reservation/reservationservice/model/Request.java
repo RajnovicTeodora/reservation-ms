@@ -14,8 +14,8 @@ import java.util.Optional;
 
 
 @Document(value = "request")
-@AllArgsConstructor
 @TypeAlias("request")
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
@@ -37,12 +37,11 @@ public class Request extends DateRange{
         this.guestId = number2;
     }
 
-    public Request(NewRequestDTO requestDTO, Optional<Accomodation> accomodation) {
+    public Request(NewRequestDTO requestDTO, Optional<Accomodation> accomodation, String guestId) {
         super(null, requestDTO.getDateFrom(), requestDTO.getDateTo());
         accomodation.ifPresent(value -> this.accomodationId = value.getId());
         this.guestNumber = requestDTO.getGuestNumber();
         this.requestStatus = RequestStatus.PENDING;
-        this.guestId = requestDTO.getGuestId();
-
+        this.guestId = guestId;
     }
 }

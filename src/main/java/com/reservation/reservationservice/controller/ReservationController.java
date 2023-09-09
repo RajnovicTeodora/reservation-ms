@@ -1,5 +1,6 @@
 package com.reservation.reservationservice.controller;
 
+import com.reservation.reservationservice.dtos.ReservationDTO;
 import com.reservation.reservationservice.exceptions.BadRequestException;
 import com.reservation.reservationservice.exceptions.NotFoundException;
 import com.reservation.reservationservice.service.ReservationService;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/reservation")
@@ -59,5 +62,12 @@ public class ReservationController {
         }catch (NotFoundException e){
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
+    }
+    @ResponseBody
+    @GetMapping(path = "/getByUserId/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ReservationDTO> getReservationsByUser (@PathVariable String username) throws Exception{
+
+        return reservationService.getRequestByUser(username);
     }
 }

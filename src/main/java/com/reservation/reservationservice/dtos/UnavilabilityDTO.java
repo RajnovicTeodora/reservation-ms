@@ -48,9 +48,7 @@ public class UnavilabilityDTO {
 
     public void convertDate() {
         try {
-            System.out.println(this.getStartDate());
             this.setDateFrom(new SimpleDateFormat("yyyy-MM-dd").parse(this.getStartDate()));
-            System.out.println(this.getDateFrom());
             this.setDateTo(new SimpleDateFormat("yyyy-MM-dd").parse(this.getEndDate()));
         } catch (ParseException e) {
             throw new RuntimeException(e);
