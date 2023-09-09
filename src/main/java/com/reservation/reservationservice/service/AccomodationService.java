@@ -46,7 +46,6 @@ public class AccomodationService {
             saved.setHost(host.get());
             accomodationRepository.save(saved);
         }
-
         return new AccomodationDTO(saved);
     }
 

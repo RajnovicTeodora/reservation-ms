@@ -157,6 +157,7 @@ public class ReservationService {
                 .filter(r -> !r.isDeleted() && !r.isCancled())
                 .map(r ->  new ReservationDTO(r,
                         accomodationRepository.findAccomodationById(r.getAccomodationId()).get().getHost().getUsername()))
+
                 .collect(Collectors.toList());
         return dtos;
     }
