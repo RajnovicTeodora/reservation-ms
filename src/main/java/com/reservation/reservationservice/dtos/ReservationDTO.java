@@ -27,8 +27,9 @@ public class ReservationDTO {
     private boolean isCancled;
     private String startDate;
     private String endDate;
+    private String usernameHost;
 
-    public ReservationDTO(Reservation reservation) {
+    public ReservationDTO(Reservation reservation, String host) {
         this.Id = reservation.getId();
         this.dateFrom = reservation.getDateFrom();
         this.dateTo = reservation.getDateTo();
@@ -40,8 +41,9 @@ public class ReservationDTO {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         this.startDate =dateFormat.format(dateFrom);
         this.endDate =dateFormat.format(dateTo);
+        this.usernameHost = host;
     }
-    public ReservationDTO(Reservation reservation, Accomodation accomodation) {
+    public ReservationDTO(Reservation reservation, Accomodation accomodation, String host) {
         this.Id = reservation.getId();
         this.dateFrom = reservation.getDateFrom();
         this.dateTo = reservation.getDateTo();
@@ -50,5 +52,6 @@ public class ReservationDTO {
         this.isDeleted = reservation.isDeleted();
         this.isCancled = reservation.isCancled();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        this.usernameHost = host;
     }
 }

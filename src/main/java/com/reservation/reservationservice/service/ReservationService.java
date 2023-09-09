@@ -155,7 +155,8 @@ public class ReservationService {
         List<Reservation> filteredRequests = reservationRepository.findAllByGuestId(guest.getId());
         List<ReservationDTO> dtos = filteredRequests.stream()
                 .filter(r -> !r.isDeleted() && !r.isCancled())
-                .map(r ->  new ReservationDTO(r))
+                .map(r ->  new ReservationDTO(r,
+                        accomodationRepository.findAccomodationById(r.getAccomodationId()).get().getHost().getUsername()))
                 .collect(Collectors.toList());
         return dtos;
     }
