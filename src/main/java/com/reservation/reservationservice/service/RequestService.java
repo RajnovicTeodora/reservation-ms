@@ -37,13 +37,10 @@ public class RequestService {
     @Autowired
     private GuestRepository guestRepository;
     public ReservationDTO approveRequest(String id) throws BadRequestException {
-
         Request request =  this.requestRepository.findById(id).orElseThrow(() ->new BadRequestException("There is no request with that id"));
-
         Reservation reservation = new Reservation(request, guestRepository.findById(request.getGuestId()).get(), accomodationRepository.findById(request.getAccomodationId()).get());
         request.setRequestStatus(RequestStatus.APPROVED);
         this.requestRepository.save(request);
-
         for(Request otherRequest : this.requestRepository.findAllByAccomodationId(request.getAccomodationId())){
             if(!Objects.equals(otherRequest.getId(), request.getId())){
                 if(!chackDaysRangeDateRange(request, otherRequest)){

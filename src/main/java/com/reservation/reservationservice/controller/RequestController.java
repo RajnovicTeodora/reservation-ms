@@ -24,6 +24,7 @@ public class RequestController {
     @PutMapping(path = "/approveRequest/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ReservationDTO approveRequest (@PathVariable String id) throws Exception{
+
         return requestService.approveRequest(id);
     }
     @ResponseBody

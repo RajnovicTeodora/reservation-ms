@@ -1,1 +1,3 @@
-D:\fakultet\devops\reservation-ms\reservation-service\src\test\java\com\reservation\reservationservice\ReservationServiceApplicationTests.java
+D:\fakultet\devops\reservation-ms\src\test\java\com\reservation\reservationservice\RequestServiceUnitTest.java
+D:\fakultet\devops\reservation-ms\src\test\java\com\reservation\reservationservice\RequestIntegrationTest.java
+D:\fakultet\devops\reservation-ms\src\test\java\com\reservation\reservationservice\constants\Constants.java
