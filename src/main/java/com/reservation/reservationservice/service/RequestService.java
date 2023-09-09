@@ -48,7 +48,10 @@ public class RequestService {
                 }
             }
         }
-        String hostUsername = accomodationRepository.findById(request.getAccomodationId()).get().getHost().getUsername();
+        String hostUsername = "";
+        if (accomodationRepository.findById(request.getAccomodationId()).get().getHost() != null){
+              hostUsername = accomodationRepository.findById(request.getAccomodationId()).get().getHost().getUsername();
+        }
         return new ReservationDTO(this.reservationRepository.save(reservation), hostUsername);
 
     }
