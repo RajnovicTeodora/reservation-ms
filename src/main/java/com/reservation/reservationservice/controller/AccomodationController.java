@@ -42,15 +42,4 @@ public class AccomodationController {
             return new ResponseEntity<>("Host not found", HttpStatus.NOT_FOUND);
         }
     }
-
-    @ResponseBody
-    @GetMapping(path = "/getHostUsernameByAccId/{accId}/{isName}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getHostUsernameByAccId (@PathVariable String accId, @PathVariable boolean isName){
-        try {
-            return new ResponseEntity<>(accomodationService.getHostUsernameByAccId(accId, isName), HttpStatus.OK);
-        }catch (NotFoundException e){
-            return new ResponseEntity<>("Accommodation not found", HttpStatus.NOT_FOUND);
-        }
-    }
 }

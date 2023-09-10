@@ -7,10 +7,7 @@ import com.reservation.reservationservice.dtos.TableRequestDTO;
 import com.reservation.reservationservice.exceptions.BadRequestException;
 import com.reservation.reservationservice.model.*;
 import com.reservation.reservationservice.model.enums.RequestStatus;
-import com.reservation.reservationservice.repository.AccomodationRepository;
-import com.reservation.reservationservice.repository.GuestRepository;
-import com.reservation.reservationservice.repository.RequestRepository;
-import com.reservation.reservationservice.repository.ReservationRepository;
+import com.reservation.reservationservice.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +33,8 @@ public class RequestService {
     private ReservationRepository reservationRepository;
     @Autowired
     private GuestRepository guestRepository;
+    @Autowired
+    private HostRepository hostRepository;
     public ReservationDTO approveRequest(String id) throws BadRequestException {
         Request request =  this.requestRepository.findById(id).orElseThrow(() ->new BadRequestException("There is no request with that id"));
         Reservation reservation = new Reservation(request, guestRepository.findById(request.getGuestId()).get(), accomodationRepository.findById(request.getAccomodationId()).get());
@@ -49,7 +48,11 @@ public class RequestService {
                 }
             }
         }
-        return new ReservationDTO(this.reservationRepository.save(reservation));
+        String hostUsername = "";
+        if (accomodationRepository.findById(request.getAccomodationId()).get().getHost() != null){
+              hostUsername = accomodationRepository.findById(request.getAccomodationId()).get().getHost().getUsername();
+        }
+        return new ReservationDTO(this.reservationRepository.save(reservation), hostUsername);
 
     }
 

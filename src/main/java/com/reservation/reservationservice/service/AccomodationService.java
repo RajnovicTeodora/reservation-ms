@@ -37,10 +37,14 @@ public class AccomodationService {
             hostObj.getAccomodations().add(saved);
             hostObj.setUsername(accomodation.getUsername());
             hostRepository.save(hostObj);
+            saved.setHost(hostObj);
+            accomodationRepository.save(saved);
         }else{
             if(host.get().getAccomodations()==null){ host.get().setAccomodations(new ArrayList<>());}
             host.get().getAccomodations().add(saved);
             hostRepository.save(host.get());
+            saved.setHost(host.get());
+            accomodationRepository.save(saved);
         }
         return new AccomodationDTO(saved);
     }
@@ -54,23 +58,5 @@ public class AccomodationService {
             a.setDeleted(true);
         }
         accomodationRepository.saveAll(g.get().getAccomodations());
-    }
-
-    public String getHostUsernameByAccId(String accId, boolean isName){
-        if(!isName) {
-            Optional<Accomodation> accomodation = accomodationRepository.findById(accId);
-            if (accomodation.isPresent()) {
-                return accomodation.get().getHost().getUsername();
-            } else {
-                throw new NotFoundException("Accommodation not found");
-            }
-        }else{
-            Optional<Accomodation> accomodation = accomodationRepository.findAccomodationByName(accId);
-            if (accomodation.isPresent()) {
-                return accomodation.get().getHost().getUsername();
-            } else {
-                throw new NotFoundException("Accommodation not found");
-            }
-        }
     }
 }
