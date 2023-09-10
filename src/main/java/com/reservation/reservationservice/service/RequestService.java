@@ -52,7 +52,7 @@ public class RequestService {
         if (accomodationRepository.findById(request.getAccomodationId()).get().getHost() != null){
               hostUsername = accomodationRepository.findById(request.getAccomodationId()).get().getHost().getUsername();
         }
-        return new ReservationDTO(this.reservationRepository.save(reservation), hostUsername);
+        return new ReservationDTO(this.reservationRepository.save(reservation), accomodationRepository.findById(reservation.getAccomodationId()).get(), hostUsername);
 
     }
 
@@ -140,7 +140,7 @@ public class RequestService {
                 .filter(r -> r.getRequestStatus() == RequestStatus.PENDING && !r.isDeleted())
                 .collect(Collectors.toList());
         List<TableRequestDTO> dtos = filteredRequests.stream()
-                .map(r -> new TableRequestDTO(r, username, guest.getCanceldReservations(), "accName"))//todo
+                .map(r -> new TableRequestDTO(r, username, guest.getCanceldReservations(), accomodationRepository.findById(r.getAccomodationId()).get().getName()))//todo
                 .collect(Collectors.toList());
         return dtos;
     }

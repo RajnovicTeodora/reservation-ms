@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -15,8 +17,8 @@ import java.util.Date;
 @Data
 public class TableRequestDTO {
     private String id;
-    private Date dateFrom;
-    private Date dateTo;
+    private String dateFrom;
+    private String dateTo;
     private int guestNumber;
     private RequestStatus requestStatus;
     private boolean isDeleted;
@@ -26,8 +28,9 @@ public class TableRequestDTO {
 
     public TableRequestDTO(Request request, String username, int numberOfCancelation, String accomodationName) { //todo datumi u neki utils
         this.id = request.getId();
-        this.dateFrom = request.getDateFrom();
-        this.dateTo = request.getDateTo();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        this.dateFrom = dateFormat.format(request.getDateFrom());
+        this.dateTo = dateFormat.format(request.getDateTo());
         this.guestNumber = request.getGuestNumber();
         this.requestStatus = request.getRequestStatus();
         this.isDeleted = request.isDeleted();
