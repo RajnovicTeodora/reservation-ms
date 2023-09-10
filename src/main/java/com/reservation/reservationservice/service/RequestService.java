@@ -53,7 +53,6 @@ public class RequestService {
               hostUsername = accomodationRepository.findById(request.getAccomodationId()).get().getHost().getUsername();
         }
         return new ReservationDTO(this.reservationRepository.save(reservation), accomodationRepository.findById(reservation.getAccomodationId()).get(), hostUsername);
-
     }
 
     public boolean chackDaysRangeDateRange(DateRange request, DateRange existingDateRange){

@@ -30,6 +30,7 @@ public class ReservationDTO {
     private String usernameHost;
 
 
+
     public ReservationDTO(Reservation reservation, Accomodation accomodation, String host) {
         this.Id = reservation.getId();
         this.dateFrom = reservation.getDateFrom();
