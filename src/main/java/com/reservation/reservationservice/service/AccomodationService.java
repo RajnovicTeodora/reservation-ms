@@ -37,14 +37,15 @@ public class AccomodationService {
             hostObj.getAccomodations().add(saved);
             hostObj.setUsername(accomodation.getUsername());
             hostRepository.save(hostObj);
-            saved.setHost(hostObj);
+            saved.setHost(new Host(hostObj.getId(), hostObj.getUsername(), new ArrayList<>()));
             accomodationRepository.save(saved);
         }else{
             if(host.get().getAccomodations()==null){ host.get().setAccomodations(new ArrayList<>());}
             host.get().getAccomodations().add(saved);
             hostRepository.save(host.get());
-            saved.setHost(host.get());
+            saved.setHost(new Host(host.get().getId(), host.get().getUsername(), new ArrayList<>()));
             accomodationRepository.save(saved);
+
         }
         return new AccomodationDTO(saved);
     }
