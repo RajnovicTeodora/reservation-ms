@@ -7,6 +7,8 @@ import com.reservation.reservationservice.repository.HostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class HostService {
     @Autowired
@@ -16,6 +18,7 @@ public class HostService {
     public void save(String username) {
         Host host = new Host();
         host.setUsername(username);
+        host.setAccomodations(new ArrayList<>());
         hostRepository.save(host);
     }
 }
